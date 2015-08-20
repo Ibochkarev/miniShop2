@@ -237,8 +237,8 @@ Ext.extend(miniShop2.grid.Orders,MODx.grid.Grid,{
 								}
 							}
 						});
-					w.fp.getForm().reset();
-					w.fp.getForm().setValues(r.object);
+					w.reset();
+					w.setValues(r.object);
 					w.show(e.target,function() {w.setPosition(null,100)},this);
 					/* Need to refresh grids with goods and logs */
 				},scope:this}
@@ -640,8 +640,8 @@ Ext.extend(miniShop2.grid.Products,MODx.grid.Grid, {
 							 ,hide: {fn: function() {this.getEl().remove();}}
 						 }
 					 });
-					 w.fp.getForm().reset();
-					 w.fp.getForm().setValues(r.object);
+					 w.reset();
+					 w.setValues(r.object);
 					 w.show(e.target,function() {w.setPosition(null,100)},this);
 				},scope:this}
 			}
@@ -677,8 +677,8 @@ Ext.extend(miniShop2.grid.Products,MODx.grid.Grid, {
 							,hide: {fn: function() {this.getEl().remove();}}
 						}
 					});
-					w.fp.getForm().reset();
-					w.fp.getForm().setValues(r.object);
+					w.reset();
+					w.setValues(r.object);
 					w.show(e.target,function() {w.setPosition(null,100)},this);
 				},scope:this}
 			}
