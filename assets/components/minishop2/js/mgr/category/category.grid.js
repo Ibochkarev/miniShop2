@@ -4,6 +4,7 @@ miniShop2.grid.Category = function(config) {
 	var baseParams = {
 		action: 'mgr/product/getlist'
 		,parent: config.resource
+		,sort: 'rank'
 	};
 	var params = {};
 	if (MODx.config.ms2_category_remember_grid) {
@@ -101,6 +102,7 @@ Ext.extend(miniShop2.grid.Category,MODx.grid.Grid,{
 							action: 'mgr/product/sort'
 							,source: source.id
 							,target: target.id
+							,parent: MODx.request.id // this should be page ID
 						}
 						,listeners: {
 							success: {fn:function(r) {dd.el.unmask();grid.refresh();},scope:grid}

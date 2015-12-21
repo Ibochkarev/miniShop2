@@ -22,8 +22,8 @@ if (empty($showZeroPrice)) {$where['Data.price:>'] = 0;}
 $leftJoin = array(
 	array('class' => 'msProductData', 'alias' => 'Data', 'on' => '`'.$class.'`.`id`=`Data`.`id`'),
 	array('class' => 'msVendor', 'alias' => 'Vendor', 'on' => '`Data`.`vendor`=`Vendor`.`id`'),
+	array('class' => 'msCategoryMember', 'alias' => 'catMember', 'on' => '`catMember`.`product_id` = `msProduct`.`id`'),
 );
-$innerJoin = array();
 
 // Include Thumbnails
 $thumbsSelect = array();
@@ -56,8 +56,26 @@ $select = array(
 	$class => !empty($includeContent) ?  $modx->getSelectColumns($class, $class) : $modx->getSelectColumns($class, $class, '', array('content'), true),
 	'Data' => $modx->getSelectColumns('msProductData', 'Data', '', array('id'), true),
 	'Vendor' => $modx->getSelectColumns('msVendor', 'Vendor', 'vendor.', array('id'), true),
+	'catMember' => $modx->getSelectColumns('msCategoryMember', 'catMember', 'catMember.', array('id'), true),
 );
 if (!empty($thumbsSelect)) {$select = array_merge($select, $thumbsSelect);}
+
+// set up catMember
+if(isset($scriptProperties['rankedCategory'])) {
+	$parents = array_map('trim', explode(',', $scriptProperties['rankedCategory']));
+	$parents_in = $parents_out = array();
+	foreach ($parents as $v) {
+		if (!is_numeric($v)) {continue;}
+		if ($v[0] == '-') {$parents_out[] = abs($v);}
+		else {$parents_in[] = abs($v);}
+	}
+	if($parents_in) $where['catMember.category_id:IN'] = $parents_in;
+	if($parents_out) $where['catMember.category_id:NOT IN'] = $parents_out;
+	$scriptProperties['parents'] = 0;
+	if($scriptProperties['sortby'] == 'menuindex') {
+		$scriptProperties['sortby'] = 'catMember.rank';
+	}
+}
 
 // Add custom parameters
 foreach (array('where','leftJoin','innerJoin','select') as $v) {
