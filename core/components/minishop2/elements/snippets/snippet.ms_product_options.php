@@ -5,6 +5,8 @@
 $miniShop2 = $modx->getService('miniShop2');
 
 $tpl = $modx->getOption('tpl', $scriptProperties, 'tpl.msOptions');
+$showEmpty = $modx->getOption('showEmpty', $scriptProperties, 0);
+
 if (!empty($input) && empty($product)) {
     $product = $input;
 }
@@ -50,6 +52,14 @@ foreach ($optionKeys as $key) {
         }
     }
     $option['value'] = $product->get($key);
+    
+    if (is_array($option['value']) && !$showEmpty){
+        $option['value'] = array_values(
+            array_filter($option['value'], function($var){
+                return $var !== '' && $var !== null;
+            })
+        );
+    }
 
     // Filter by groups
     $skip = !empty($groups) && !in_array($option['category'], $groups) && !in_array($option['category_name'], $groups);
