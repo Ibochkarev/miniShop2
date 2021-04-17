@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added delivery_cost parameter for msOnGetOrderCost event [#585]
 - Added wiretapping of initiated context for work from API [#578]
 - Added counting of the number of items in the cart [#579]
 - Replace ssl certificat for paypal [#573]
